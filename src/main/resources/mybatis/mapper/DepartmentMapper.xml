@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tcp.iamlazy.dao.DepartmentDao">
+
+    <select id="getDepartmentList" resultType="Department">
+        SELECT department_no
+        , company_no
+        , department
+        FROM department
+        WHERE 1=1
+        <if test="companyNo != null">
+            AND company_no = #{companyNo}
+        </if>
+        ORDER BY department_no DESC
+    </select>
+
+</mapper>
