@@ -1,4 +1,4 @@
-package com.tcp.iamlazy;
+package com.tcp.iamlazy.adapter;
 
 import com.tcp.iamlazy.dto.Company;
 import com.tcp.iamlazy.response.CompanyResponse;

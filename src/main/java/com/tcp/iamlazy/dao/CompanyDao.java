@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 @Mapper
 public interface CompanyDao {
-    Company getCompanyList();
+    List<Company> getCompanyList();
 }
