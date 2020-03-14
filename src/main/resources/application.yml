@@ -1,0 +1,20 @@
+mybatis:
+  type-aliases-package: com.tcp.iamlazy
+#  mapper-locations: classpath:mybatis/mapper/CompanyMapper.xml
+  config-location: classpath:mybatis/mapper/mybatis-config.xml
+
+spring:
+  profiles:
+    include:
+      - private
+  http:
+    log-request-details: true
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    web: TRACE
+    org:
+      springframework:
+        web: TRACE

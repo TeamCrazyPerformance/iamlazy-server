@@ -6,6 +6,12 @@
 
     <select id="getCompanyList" resultType="com.tcp.iamlazy.dto.Company">
         SELECT * FROM company
+<!--        SELECT-->
+<!--          company_no companyNo,-->
+<!--          company_name companyName,-->
+<!--          start_date startDate,-->
+<!--          end_date endDate-->
+<!--         FROM company-->
     </select>
 
 </mapper>

@@ -1,0 +1,42 @@
+<configuration scan="true" scanPeriod="180 seconds">
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <appender class="ch.qos.logback.core.ConsoleAppender" name="STDOUT">
+    <encoder>
+      <Pattern>%date{yyyy-MM-dd:HH:mm:ss.SSS} %-5level %relative --- [%thread] %logger.%method\(%file:%line\) : %msg %n</Pattern>
+    </encoder>
+
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>TRACE</level>
+
+    </filter>
+  </appender>
+
+  <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="dailyRollingAppender">
+    <file>normal.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>%date{yyyy-MM-dd:HH:mm:ss.SSS} %-5level %relative --- [%thread] %logger.%method\(%file:%line\) : %msg %n</Pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>normal.%d{yyyy-MM-dd}.log.gz</FileNamePattern>
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+  </appender>
+
+  <logger additivity="false" level="INFO" name="com.tcp.iamlazy">
+    <level value="INFO"/>
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="dailyRollingAppender"/>
+  </logger>
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT"/>
+  </root>
+
+  <logger name="jdbc.sqlonly" level="debug" />
+  <logger name="jdbc.sqltiming" level="off" />
+  <logger name="jdbc.audit" level="off" />
+  <logger name="jdbc.resultset" level="off" />
+  <logger name="jdbc.resultsettable" level="debug" />
+  <logger name="jdbc.connection" level="off" />
+
+</configuration>

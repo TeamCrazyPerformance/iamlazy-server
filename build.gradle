@@ -29,7 +29,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
-//    compile("org.springframework.boot:spring-boot-starter-jdbc:2.0.1.RELEASE")
 
 //    compile('org.springframework.boot:spring-boot-starter-jdbc')
     compile('mysql:mysql-connector-java')
@@ -37,6 +36,21 @@ dependencies {
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     annotationProcessor("org.projectlombok:lombok:1.18.8")
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
+
+    // https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-core
+    compile group: 'io.swagger.core.v3', name: 'swagger-core', version: '2.1.1'
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    // https://mvnrepository.com/artifact/io.springfox/springfox-bean-validators
+    compile group: 'io.springfox', name: 'springfox-bean-validators', version: '2.9.2'
+
+
+
+
+
 
     testImplementation 'org.springframework.security:spring-security-test'
 }

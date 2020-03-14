@@ -1,18 +1,20 @@
 package com.tcp.iamlazy.dto;
 
-import java.util.List;
+import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import lombok.*;
-
-@Data
-@Getter @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@Setter
+@ToString
 public class Company{
 
-    private int company_no;
-    private String company_name;
-    private String start_date;
-    private String end_date;
+    @NotNull(message = "Company number cannot be null.")
+    private int companyNo;
+    private String companyName;
+    private String startDate;
+    private String endDate;
+
 }
