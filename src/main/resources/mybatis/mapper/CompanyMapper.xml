@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.tcp.iamlazy.dao.CompanyDao">
+<mapper namespace="com.tcp.iamlazy.dao.CompanyMapper">
 
-    <select id="getCompanyList" resultType="Company">
+    <select id="getCompanyList" resultType="com.tcp.iamlazy.dto.Company">
         SELECT * FROM company
     </select>
 

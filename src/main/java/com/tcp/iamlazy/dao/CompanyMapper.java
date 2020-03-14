@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface CompanyDao {
+public interface CompanyMapper {
     List<Company> getCompanyList();
 }

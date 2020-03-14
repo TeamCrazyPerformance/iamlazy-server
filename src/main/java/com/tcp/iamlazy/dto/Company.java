@@ -11,10 +11,8 @@ import lombok.*;
 @Builder
 public class Company{
 
-    private int companyNo;
-    private String companyNaAme;
-    private String startDate;
-    private String endDate;
-    private List<Department> departmentList;
-
+    private int company_no;
+    private String company_name;
+    private String start_date;
+    private String end_date;
 }
