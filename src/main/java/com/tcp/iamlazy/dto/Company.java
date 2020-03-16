@@ -14,7 +14,7 @@ public class Company{
     @NotNull(message = "Company number cannot be null.")
     private int companyNo;
     private String companyName;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
 }

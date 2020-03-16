@@ -37,6 +37,9 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.8")
     testCompile("org.springframework.boot:spring-boot-starter-test")
     compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
+    // https://mvnrepository.com/artifact/org.hamcrest/hamcrest
+    testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
+
 
     // https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-core
     compile group: 'io.swagger.core.v3', name: 'swagger-core', version: '2.1.1'
