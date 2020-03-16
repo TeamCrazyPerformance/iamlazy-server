@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value="/companies")
 public class IamLazyController {
-    @Autowired
+    final
     CompanyService companyService;
+
+    public IamLazyController(CompanyService companyService) {
+        this.companyService = companyService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Company>> getCompanyList(){
