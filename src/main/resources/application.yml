@@ -1,6 +1,5 @@
 mybatis:
   type-aliases-package: com.tcp.iamlazy
-#  mapper-locations: classpath:mybatis/mapper/CompanyMapper.xml
   config-location: classpath:mybatis/mapper/mybatis-config.xml
 
 spring:
