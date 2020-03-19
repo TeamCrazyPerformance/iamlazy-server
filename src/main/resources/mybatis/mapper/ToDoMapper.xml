@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tcp.iamlazy.todo.repository.ToDoMapper">
+    <select id="getDayToDo" resultType="com.tcp.iamlazy.todo.entity.ToDo">
+        SELECT todoTitle, todoContent, todoDate, finish
+        FROM todo
+        WHERE toDoDate = now()
+    </select>
+
+
+</mapper>

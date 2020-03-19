@@ -7,6 +7,11 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
     <mappers>
-        <mapper resource="mybatis/mapper/CompanyMapper.xml"/>
+        <mapper resource="mybatis/mapper/ReviewMapper.xml"/>
+        <mapper resource="mybatis/mapper/SettingMapper.xml"/>
+        <mapper resource="mybatis/mapper/ToDoMapper.xml"/>
+        <mapper resource="mybatis/mapper/UserMapper.xml"/>
+        <mapper resource="mybatis/mapper/StatisticsMapper.xml"/>
+
     </mappers>
 </configuration>
