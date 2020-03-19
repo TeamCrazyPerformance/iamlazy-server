@@ -2,11 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.tcp.iamlazy.review.ReviewMapper">
+<mapper namespace="com.tcp.iamlazy.review.repository.ReviewMapper">
 
-    <select id="getWeekRv" resultType="com.tcp.iamlazy.review.Review">
-        SELECT * FROM review
-
+    <select id="getWeekRv" resultType="com.tcp.iamlazy.review.entity.Review">
+        SELECT toDoDate, reviewContent, emoticon
+        FROM review
+        WHERE toDoDate BETWEEN DATE_FORMAT(DATE_ADD(NOW(), INTERVAL (WEEKDAY(NOW())) * -1 DAY), '%Y-%m-%d')
+              and DATE_ADD(NOW(), INTERVAL (6 - WEEKDAY(NOW())) * +1 DAY)
     </select>
 
 </mapper>

@@ -33,6 +33,17 @@ public class SwaggerConfiguration {
     }
 
     @Bean
+    public Docket userApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("유저 정보 요청")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.tcp.iamlazy.user"))
+                .paths(PathSelectors.ant("/user"))
+                .build()
+                .apiInfo(getApiInfo());
+    }
+
+    @Bean
     public Docket reviewApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("회고 요청")
