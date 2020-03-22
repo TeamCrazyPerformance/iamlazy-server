@@ -6,7 +6,8 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 
-@Getter @Setter
+@Getter
+@Setter
 @ToString
 public class User {
     @NotNull(message = "userIdx cannot be null.")
