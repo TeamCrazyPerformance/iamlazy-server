@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
-@RequestMapping("oauth_lazy")
+//@RequestMapping("oauth_lazy")
 public class OAuthController {
 
-  @GetMapping
+  @GetMapping("/oauth_lazy")
   public ResponseEntity<String> getKakaoUserAuthCode(@RequestParam("code")String code) {
 
     log.info("Code [{}] is returned", code);
@@ -29,4 +29,11 @@ public class OAuthController {
     return ResponseEntity.ok("OK");
   }
 
+  @GetMapping("/login/oauth2/code/kakao")
+  public ResponseEntity<String> getKakaoUserAuthCode2(@RequestParam("code")String code) {
+
+    log.info("2Code [{}] is returned", code);
+
+    return ResponseEntity.ok("OK2");
+  }
 }

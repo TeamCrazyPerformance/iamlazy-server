@@ -1,5 +1,8 @@
 package com.tcp.iamlazy.auth.kakao;
 
+import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+
 /**
  *
  * 카카오 소셜 rest api를 이용한 로그인 관련 기능 집합체.
@@ -8,5 +11,4 @@ package com.tcp.iamlazy.auth.kakao;
  * template use File | Settings | File Templates.
  */
 public class KakaoAuths {
-
 }
