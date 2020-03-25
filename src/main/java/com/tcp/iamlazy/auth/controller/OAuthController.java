@@ -1,8 +1,6 @@
 package com.tcp.iamlazy.auth.controller;
 
-import java.io.IOException;
 import java.net.URI;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

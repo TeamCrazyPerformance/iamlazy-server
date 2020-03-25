@@ -18,11 +18,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableAuthorizationServer
 public class BeanConfiguration {
 
-//  @Bean
-//  public TokenStore JdbcTokenStore(DataSource dataSource) {
-//    return new JdbcTokenStore(dataSource);
-//  }
-
   @Bean
   public TokenStore jwtTokenStore(JwtAccessTokenConverter jwtAccessTokenConverter) {
     return new JwtTokenStore(jwtAccessTokenConverter);
