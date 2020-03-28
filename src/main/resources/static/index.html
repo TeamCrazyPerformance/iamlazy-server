@@ -11,6 +11,35 @@
   <meta name="description" content=""/>
   <meta name="viewport" content="width=device-width"/>
   <base href="/"/>
+  <script>
+
+    function onclick() {
+      // var name = "popup test";
+      // var option = "width = 500, height = 500, top = 100, left = 200, location = no"
+      // var et = window.open("http://121.130.167.189:8080/oauth2/authorization/kakao", '_blank',  name, option);
+      let ifa = $('<iframe id ="myframe" src="logintry.html" width="500px" height="600px"></iframe>');//.attr('style', 'display:none');
+      // ifa.attr('src', 'logintry.html');
+      $('body').append(ifa);
+    }
+
+    function sayhello() {
+      alert('hello');
+      // $('body').html($('#myframe').contents());
+    }
+
+    window.onload = function () {
+      window.addEventListener('message', function (e) {
+        console.log('parent message');
+        console.log(e.data); // { childData : 'test data' }
+        console.log("e.origin : " + e.origin); //http://123.com(자식창 도메인)
+
+        if (e.data.childData === 'test data') {
+          alert("oh man!")
+        }
+        $('#myframe').attr('style','display:none')
+      });
+    }
+  </script>
 </head>
 <body>
 
@@ -19,6 +48,11 @@
 </div>
 
 This is for hellow.
+
+you can click <a href="javascript:onclick()">here</a>
+<br>you can also <a href="javascript:sayhello()" >click </a>
+<br>
+<!--<iframe id ="myframe" src="logintry.html" width="500px" height="600px"></iframe>-->
 
 </body>
 </html>

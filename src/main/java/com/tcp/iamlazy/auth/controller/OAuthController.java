@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -31,10 +32,12 @@ public class OAuthController {
   }
 
   @GetMapping("/login/success")
-  public ResponseEntity<String> loginSuccess(OAuth2AuthenticationToken authentication,
-                                             @AuthenticationPrincipal OAuth2User principal) {
+  public ResponseEntity<OAuth2AuthenticationToken> loginSuccess(OAuth2AuthenticationToken authentication,
+                                             @AuthenticationPrincipal OAuth2User principal,
+                                                                RedirectAttributes attributes) {
 
     if (authentication == null) {
+      log.info("There is no authentication");
       HttpHeaders headers = new HttpHeaders();
       headers.setLocation(URI.create("/login/fail"));
       return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
@@ -51,7 +54,12 @@ public class OAuthController {
 
     log.info("Login was returned but what to do next should i... the profile..?");
 
-    return ResponseEntity.ok("OK Logged in");
+    return ResponseEntity.ok(authentication);
+//    attributes.addAttribute("name", authentication.toString());
+//    attributes.addFlashAttribute("name1", authentication.toString());
+//    HttpHeaders headers = new HttpHeaders();
+//    headers.setLocation(URI.create("/login/suc"));
+//    return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
   }
 
   @GetMapping("/login/fail")
@@ -61,4 +69,5 @@ public class OAuthController {
 
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body("You are not logged in");
   }
+
 }

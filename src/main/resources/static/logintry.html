@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello world</title>
+  <script
+      src="https://code.jquery.com/jquery-2.2.4.min.js"
+      integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+      crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <meta name="description" content=""/>
+  <meta name="viewport" content="width=device-width"/>
+  <base href="/"/>
+  <script>
+
+    function onclick() {
+      var name = "popup test";
+      var option = "width = 500, height = 500, top = 100, left = 200, location = no"
+      var et = window.open("http://121.130.167.189:8080/oauth2/authorization/kakao", '_self',  name, option);
+
+    }
+
+    alert('hi there!')
+    location.href = 'http://localhost:8080/oauth2/authorization/kakao';
+    // window.onload = function() {
+    //
+    //   console.log('child load');
+    //
+    //   //targetWindow.postMessage(message, targetOrigin, [transfer]);
+    //   window.parent.postMessage({ childData : 'test data' }, 'http://abc.com');
+    //
+    //   //모든 도메인에 대해서 허용하고자 하는 경우 targetOrigin(두번째인자) 인자를 '*'로 작성
+    //   //보안을 위해 추천하지 않음
+    //   //window.parent.postMessage({ childData : 'test data' }, '*');
+    //
+    // };
+
+
+  </script>
+</head>
+<body>
+
+<div class="container unauthenticated">
+  With GitHub: <a href="/oauth2/authorization/kakao">click here</a>
+</div>
+
+This is for hellow.
+
+you can click <a href="javascript:onclick()">here</a>
+
+</body>
+</html>
