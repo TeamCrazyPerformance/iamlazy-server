@@ -5,5 +5,26 @@
 <mapper namespace="com.tcp.iamlazy.user.repository.UserMapper">
 
 
+  <insert id="insertUser">
+
+    insert into `user`
+    (userKakaoID, userName, userImage)
+    values
+    (#{userKakaoID},
+    #{userName},
+    #{userImage});
+
+  </insert>
+  <select id="isUserExist" resultType="com.tcp.iamlazy.user.entity.User">
+
+    select
+        userIdx as userIdx,
+        userKakaoID,
+        userName,
+        userImage
+    from `user` as u
+    where u.userName = #{userName}
+
+  </select>
 
 </mapper>

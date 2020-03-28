@@ -63,6 +63,9 @@ dependencies {
     compile group: 'io.vavr', name: 'vavr-match', version: '0.10.0'
     compile group: 'commons-codec', name: 'commons-codec', version: '1.13'
     compile group: 'com.google.guava', name: 'guava', version: '25.1-jre'
+// https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4
+    testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.2'
+    testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.2'
 
 
 

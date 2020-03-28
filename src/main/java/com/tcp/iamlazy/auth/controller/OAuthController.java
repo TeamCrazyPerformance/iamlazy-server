@@ -1,5 +1,7 @@
 package com.tcp.iamlazy.auth.controller;
 
+import com.tcp.iamlazy.bean.pub.ApplicationEventPublishProvider;
+import com.tcp.iamlazy.event.user.UserRegistrationEvent;
 import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -33,8 +35,7 @@ public class OAuthController {
 
   @GetMapping("/login/success")
   public ResponseEntity<OAuth2AuthenticationToken> loginSuccess(OAuth2AuthenticationToken authentication,
-                                             @AuthenticationPrincipal OAuth2User principal,
-                                                                RedirectAttributes attributes) {
+                                             @AuthenticationPrincipal OAuth2User principal) {
 
     if (authentication == null) {
       log.info("There is no authentication");
@@ -46,20 +47,19 @@ public class OAuthController {
     log.info("What is clientRegi id {}", authentication.getAuthorizedClientRegistrationId());
     log.info("What is name {}", authentication.getName());
 
+    ApplicationEventPublishProvider.publishEvent(new UserRegistrationEvent(authentication, principal));
+
     OAuth2AuthorizedClient client = authorizedClientService
         .loadAuthorizedClient(
           authentication.getAuthorizedClientRegistrationId(),
           authentication.getName()
         );
 
+
+
     log.info("Login was returned but what to do next should i... the profile..?");
 
     return ResponseEntity.ok(authentication);
-//    attributes.addAttribute("name", authentication.toString());
-//    attributes.addFlashAttribute("name1", authentication.toString());
-//    HttpHeaders headers = new HttpHeaders();
-//    headers.setLocation(URI.create("/login/suc"));
-//    return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
   }
 
   @GetMapping("/login/fail")
