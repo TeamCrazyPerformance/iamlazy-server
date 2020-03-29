@@ -1,6 +1,7 @@
 package com.tcp.iamlazy.event.user.listener;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -37,6 +38,7 @@ public class UserRegistrationEventListenerTest {
   private OAuth2User principal;
   private UserRegistrationEventListener listenerSpy;
   private User user;
+  private UserRegistrationEvent event;
 
   @Before
   public void beforeEach() {
@@ -47,27 +49,32 @@ public class UserRegistrationEventListenerTest {
     user.setUserImage("");
     user.setUserKakaoID("kakaoId");
     user.setUserIdx(323412);
+
+    event = new UserRegistrationEvent(authentication, principal);
+
   }
 
   @Test
-  public void whenUserHaveNotBeenRegisteredInsertShouldBeCalled() throws Exception {
-
-
+  public void whenUserHasNotBeenRegisteredInsertShouldBeCalled() throws Exception {
 
     when(userServiceMock.isUserExist(user)).thenReturn(false);
     when(userServiceMock.registerUser(user)).thenReturn(true);
-//    when(ReflectionTestUtils.invokeMethod(listenerSpy, "retrieveUser", any(KakaoPrincipal.class))).thenReturn(user);
-//    doReturn(user).when(ReflectionTestUtils.invokeMethod(listenerSpy, "retrieveUser", any(
-//        KakaoPrincipal.class)));
-//    doReturn(user).when(listenerSpy).retrieveUser(any(KakaoPrincipal.class));
     doReturn(user).when(listenerSpy, "retrieveUser", any(KakaoPrincipal.class));
-//    when(Whitebox.invokeMethod(listenerSpy, "retrieveUser", any(KakaoPrincipal.class))).thenReturn(user);
 
-    UserRegistrationEvent event = new UserRegistrationEvent(authentication, principal);
     listenerSpy.handleUserRegistrationEvent(event);
 
     verify(userServiceMock, times(1)).registerUser(user);
 
   }
 
+  @Test
+  public void whenUserHasBeenRegisteredInsertShouldNotBeCalled() throws Exception {
+
+    when(userServiceMock.isUserExist(user)).thenReturn(true);
+    doReturn(user).when(listenerSpy, "retrieveUser", any(KakaoPrincipal.class));
+
+    listenerSpy.handleUserRegistrationEvent(event);
+
+    verify(userServiceMock, never()).registerUser(user);
+  }
 }
