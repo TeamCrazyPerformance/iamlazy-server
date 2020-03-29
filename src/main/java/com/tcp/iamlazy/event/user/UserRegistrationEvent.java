@@ -1,9 +1,8 @@
 package com.tcp.iamlazy.event.user;
 
+import com.tcp.iamlazy.user.model.KakaoPrincipal;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 /**
  *
@@ -15,13 +14,5 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 @Data
 @ToString
 public class UserRegistrationEvent {
-
-  private OAuth2AuthenticationToken authentication;
-  private OAuth2User principal;
-
-  public UserRegistrationEvent(OAuth2AuthenticationToken authentication, OAuth2User principal) {
-    this.authentication = authentication;
-
-    this.principal = principal;
-  }
+  private final KakaoPrincipal kakaoPrincipal;
 }

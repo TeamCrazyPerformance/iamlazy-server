@@ -1,20 +1,21 @@
 package com.tcp.iamlazy.auth.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcp.iamlazy.bean.pub.ApplicationEventPublishProvider;
 import com.tcp.iamlazy.event.user.UserRegistrationEvent;
+import com.tcp.iamlazy.user.model.KakaoPrincipal;
+import com.tcp.iamlazy.util.func.Fn;
+import io.vavr.control.Try;
 import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -27,14 +28,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 public class OAuthController {
 
-  private final OAuth2AuthorizedClientService authorizedClientService;
+  private ObjectMapper objectMapper;
 
-  public OAuthController(OAuth2AuthorizedClientService authorizedClientService) {
-    this.authorizedClientService = authorizedClientService;
+  public OAuthController() {
+    this.objectMapper = new ObjectMapper();
   }
 
   @GetMapping("/login/success")
-  public ResponseEntity<OAuth2AuthenticationToken> loginSuccess(OAuth2AuthenticationToken authentication,
+  public ResponseEntity<KakaoPrincipal> loginSuccess(OAuth2AuthenticationToken authentication,
                                              @AuthenticationPrincipal OAuth2User principal) {
 
     if (authentication == null) {
@@ -44,22 +45,17 @@ public class OAuthController {
       return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
-    log.info("What is clientRegi id {}", authentication.getAuthorizedClientRegistrationId());
-    log.info("What is name {}", authentication.getName());
+    final Try<String> callTry = Try.of(() -> objectMapper.writeValueAsString(principal.getAttributes()));
+    final String userSerial = callTry.getOrElseThrow(Fn.throwErr(callTry::getCause));
 
-    ApplicationEventPublishProvider.publishEvent(new UserRegistrationEvent(authentication, principal));
+    final Try<KakaoPrincipal> accountTry = Try.of(() -> objectMapper.readValue(userSerial, KakaoPrincipal.class));
+    final KakaoPrincipal kakaoAccount = accountTry.getOrElseThrow(Fn.throwErr(accountTry::getCause));
 
-    OAuth2AuthorizedClient client = authorizedClientService
-        .loadAuthorizedClient(
-          authentication.getAuthorizedClientRegistrationId(),
-          authentication.getName()
-        );
-
-
+    ApplicationEventPublishProvider.publishEvent(new UserRegistrationEvent(kakaoAccount));
 
     log.info("Login was returned but what to do next should i... the profile..?");
 
-    return ResponseEntity.ok(authentication);
+    return ResponseEntity.ok(kakaoAccount);
   }
 
   @GetMapping("/login/fail")

@@ -1,12 +1,12 @@
 package com.tcp.iamlazy.event.user.listener;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.doReturn;
 
 import com.tcp.iamlazy.event.user.UserRegistrationEvent;
 import com.tcp.iamlazy.user.entity.User;
@@ -19,8 +19,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+
+
 
 /**
  * Created with intellij IDEA. by 2020 03 29/03/2020 2:59 오전 29 User we at 02 59 To change this
@@ -33,9 +33,7 @@ public class UserRegistrationEventListenerTest {
   @Mock
   private UserService userServiceMock;
   @Mock
-  private OAuth2AuthenticationToken authentication;
-  @Mock
-  private OAuth2User principal;
+  private KakaoPrincipal kakaoPrincipal;
   private UserRegistrationEventListener listenerSpy;
   private User user;
   private UserRegistrationEvent event;
@@ -48,18 +46,18 @@ public class UserRegistrationEventListenerTest {
     user.setUserName("username");
     user.setUserImage("");
     user.setUserKakaoID("kakaoId");
-    user.setUserIdx(323412);
+//    user.setUserIdx(323412);
 
-    event = new UserRegistrationEvent(authentication, principal);
-
+    event = new UserRegistrationEvent(kakaoPrincipal);
   }
 
   @Test
   public void whenUserHasNotBeenRegisteredInsertShouldBeCalled() throws Exception {
-
     when(userServiceMock.isUserExist(user)).thenReturn(false);
     when(userServiceMock.registerUser(user)).thenReturn(true);
-    doReturn(user).when(listenerSpy, "retrieveUser", any(KakaoPrincipal.class));
+    doReturn(user.getUserName()).when(kakaoPrincipal).getUserName();
+    doReturn(user.getUserImage()).when(kakaoPrincipal).getUserImageLink();
+    doReturn(user.getUserKakaoID()).when(kakaoPrincipal).getId();
 
     listenerSpy.handleUserRegistrationEvent(event);
 
@@ -69,9 +67,10 @@ public class UserRegistrationEventListenerTest {
 
   @Test
   public void whenUserHasBeenRegisteredInsertShouldNotBeCalled() throws Exception {
-
     when(userServiceMock.isUserExist(user)).thenReturn(true);
-    doReturn(user).when(listenerSpy, "retrieveUser", any(KakaoPrincipal.class));
+    doReturn(user.getUserName()).when(kakaoPrincipal).getUserName();
+    doReturn(user.getUserImage()).when(kakaoPrincipal).getUserImageLink();
+    doReturn(user.getUserKakaoID()).when(kakaoPrincipal).getId();
 
     listenerSpy.handleUserRegistrationEvent(event);
 

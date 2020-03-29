@@ -1,15 +1,11 @@
 package com.tcp.iamlazy.event.user.listener;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcp.iamlazy.event.user.UserRegistrationEvent;
 import com.tcp.iamlazy.user.entity.User;
 import com.tcp.iamlazy.user.model.KakaoPrincipal;
 import com.tcp.iamlazy.user.service.UserService;
-import com.tcp.iamlazy.util.func.Fn;
-import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,11 +21,9 @@ import org.springframework.stereotype.Component;
 public class UserRegistrationEventListener {
 
   private final UserService userService;
-  private final ObjectMapper objectMapper;
 
   public UserRegistrationEventListener(UserService userService) {
     this.userService = userService;
-    objectMapper = new ObjectMapper();
   }
 
   /**
@@ -42,15 +36,9 @@ public class UserRegistrationEventListener {
 
     log.info("User registration event was {}", event);
 
-    final OAuth2User userInfo = event.getPrincipal();
+    final KakaoPrincipal kakaoPrincipal = event.getKakaoPrincipal();
 
-    final Try<String> callTry = Try.of(() -> objectMapper.writeValueAsString(userInfo.getAttributes()));
-    final String userSerial = callTry.getOrElseThrow(Fn.throwErr(callTry::getCause));
-
-    final Try<KakaoPrincipal> accountTry = Try.of(() -> objectMapper.readValue(userSerial, KakaoPrincipal.class));
-    final KakaoPrincipal kakaoAccount = accountTry.getOrElseThrow(Fn.throwErr(accountTry::getCause));
-
-    final User loginUser = retrieveUser(kakaoAccount);
+    final User loginUser = User.retrieveUserFromKakao(kakaoPrincipal);
 
     final boolean userExist = userService.isUserExist(loginUser);
     if (!userExist) {
@@ -59,17 +47,6 @@ public class UserRegistrationEventListener {
         throw new RuntimeException("user register failed");
       }
     }
-
-
-  }
-
-  protected User retrieveUser(KakaoPrincipal kakaoAccount) {
-    User user = new User();
-    user.setUserKakaoID(kakaoAccount.getId());
-    user.setUserImage(kakaoAccount.getUserImageLink());
-    user.setUserName(kakaoAccount.getUserName());
-
-    return user;
   }
 
 }
