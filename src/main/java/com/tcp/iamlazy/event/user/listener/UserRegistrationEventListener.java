@@ -7,6 +7,7 @@ import com.tcp.iamlazy.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -32,6 +33,7 @@ public class UserRegistrationEventListener {
    * @param event
    */
   @EventListener
+  @Transactional
   public void handleUserRegistrationEvent(UserRegistrationEvent event) {
 
     log.info("User registration event was {}", event);

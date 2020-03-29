@@ -8,9 +8,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcp.iamlazy.event.user.UserRegistrationEvent;
 import com.tcp.iamlazy.user.entity.User;
+import com.tcp.iamlazy.user.model.KakaoAccount;
 import com.tcp.iamlazy.user.model.KakaoPrincipal;
+import com.tcp.iamlazy.user.model.KakaoProperties;
 import com.tcp.iamlazy.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -75,5 +79,20 @@ public class UserRegistrationEventListenerTest {
     listenerSpy.handleUserRegistrationEvent(event);
 
     verify(userServiceMock, never()).registerUser(user);
+  }
+
+  @Test
+  public void generatedKAkao() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    KakaoPrincipal kakaoPrincipal = new KakaoPrincipal();
+    kakaoPrincipal.setId("39392932");
+    KakaoProperties p = new KakaoProperties();
+    p.setNickname("nickname");
+    KakaoAccount a = new KakaoAccount();
+    a.setProfileNeedsAgreement(false);
+    kakaoPrincipal.setKakaoAccount(a);
+    kakaoPrincipal.setProperties(p);
+    final String s = mapper.writeValueAsString(kakaoPrincipal);
+    System.out.println(s);
   }
 }

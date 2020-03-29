@@ -11,19 +11,19 @@ import java.util.Date;
 @ToString
 public class ToDo {
     @NotNull(message = "userIdx cannot be null.")
-    private int userIdx;
+    private int userId;
     @NotNull(message = "todoIdx cannot be null.")
     private int todoIdx;
     private String todoTitle;
     private String todoContent;
     private Date todoDate;
-    private int repeatableYN;
+    private boolean repeatableYN;
     private int repeatUnit;
     private Date startDate;
     private Date endDate;
     private String weekDay;
     private int monthDay;
-    private int finish;
+    private boolean finish;
 
 
 

@@ -4,6 +4,7 @@ import com.tcp.iamlazy.user.entity.User;
 import com.tcp.iamlazy.user.repository.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -19,6 +20,7 @@ public class UserService {
      * @param user
      * @return 기존에 존재할 경우 참값.
      */
+    @Transactional
     public boolean isUserExist(User user) {
         final User userExist = userMapper.isUserExist(user);
 
@@ -36,6 +38,7 @@ public class UserService {
      * @param user
      * @return 성공 유무
      */
+    @Transactional
     public boolean registerUser(User user) {
         final int insertCount = userMapper.insertUser(user);
         log.info("User inserted count affected : {}", insertCount);
