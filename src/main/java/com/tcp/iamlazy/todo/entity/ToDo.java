@@ -13,10 +13,10 @@ import java.util.Date;
 @ToString
 public class ToDo {
     @NotNull(message = "userIdx cannot be null.")
-    @JsonProperty(access = Access.READ_ONLY)
+//    @JsonProperty(access = Access.READ_ONLY)
     private int userId;
     @NotNull(message = "todoIdx cannot be null.")
-    @JsonProperty(access = Access.READ_ONLY)
+//    @JsonProperty(access = Access.READ_ONLY)
     private int todoIdx;
     private String todoTitle;
     private String todoContent;
@@ -28,7 +28,5 @@ public class ToDo {
     private String weekDay;
     private int monthDay;
     private boolean finish;
-
-
 
 }

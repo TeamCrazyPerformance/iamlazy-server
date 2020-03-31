@@ -1,5 +1,8 @@
 package com.tcp.iamlazy.configuration;
 
+import com.google.common.collect.Lists;
+import com.tcp.iamlazy.configuration.security.UserPrincipal;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -8,6 +11,9 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -21,20 +27,22 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfiguration {
 
-    @Bean
-    public Docket authenticationApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("인증 요청")
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.tcp.iamlazy.auth"))
-                .paths(PathSelectors.ant("/account"))
-                .build()
-                .apiInfo(getApiInfo());
-    }
+//    @Bean
+//    public Docket authenticationApi() {
+//        return new Docket(DocumentationType.SWAGGER_2)
+//                .ignoredParameterTypes(UserPrincipal.class)
+//                .groupName("인증 요청")
+//                .select()
+//                .apis(RequestHandlerSelectors.basePackage("com.tcp.iamlazy.auth"))
+//                .paths(PathSelectors.ant("/account"))
+//                .build()
+//                .apiInfo(getApiInfo());
+//    }
 
     @Bean
     public Docket userApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(UserPrincipal.class)
                 .groupName("유저 정보 요청")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tcp.iamlazy.user"))
@@ -46,6 +54,7 @@ public class SwaggerConfiguration {
     @Bean
     public Docket reviewApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(UserPrincipal.class)
                 .groupName("회고 요청")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tcp.iamlazy.review"))
@@ -57,10 +66,13 @@ public class SwaggerConfiguration {
     @Bean
     public Docket todoApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(UserPrincipal.class)
+                .securityContexts(Lists.newArrayList(securityContext()))
+                .securitySchemes(Lists.newArrayList(apiKey()))
                 .groupName("할일 요청")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tcp.iamlazy.todo"))
-                .paths(PathSelectors.ant("/todo/*"))
+                .paths(PathSelectors.any())
                 .build()
                 .apiInfo(getApiInfo());
     }
@@ -68,6 +80,7 @@ public class SwaggerConfiguration {
     @Bean
     public Docket statisticApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(UserPrincipal.class)
                 .groupName("통계 요청")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tcp.iamlazy.stats"))
@@ -79,6 +92,7 @@ public class SwaggerConfiguration {
     @Bean
     public Docket settingApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(UserPrincipal.class)
                 .groupName("설정 요청")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tcp.iamlazy.setting"))
@@ -87,15 +101,17 @@ public class SwaggerConfiguration {
                 .apiInfo(getApiInfo());
     }
 
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("A. 전체")
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build();
-    }
+//    @Bean
+//    public Docket api() {
+//        return new Docket(DocumentationType.SWAGGER_2)
+//                .ignoredParameterTypes(UserPrincipal.class)
+//                .groupName("A. 전체")
+//                .select()
+//                .apis(RequestHandlerSelectors.any())
+//                .paths(Predicates.not(PathSelectors.regex("/error.*")))
+//                .paths(PathSelectors.any())
+//                .build();
+//    }
 
     private ApiInfo getApiInfo() {
         return new ApiInfoBuilder()
@@ -105,4 +121,23 @@ public class SwaggerConfiguration {
                 .version("latest")
                 .build();
     }
+
+    private ApiKey apiKey() {
+        return new ApiKey("JWT", "Authorization", "header");
+    }
+
+    private springfox.documentation.spi.service.contexts.SecurityContext securityContext() {
+        return springfox.documentation.spi.service.contexts.SecurityContext.builder()
+            .securityReferences(defaultAuth()).forPaths(PathSelectors.any()).build();
+    }
+
+    List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global",
+                                                                       "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Lists.newArrayList(new SecurityReference("JWT", authorizationScopes));
+    }
+
+//    출처: https://kimyhcj.tistory.com/363 [기억과 기록]
 }

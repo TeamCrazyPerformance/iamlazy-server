@@ -8,11 +8,14 @@
   <insert id="insertUser">
 
     insert into `user`
-    (userKakaoID, userName, userImage)
+    (userKakaoID, userName, userImage, userEmail, provider)
     values
     (#{userKakaoID},
     #{userName},
-    #{userImage});
+    #{userImage},
+    #{userEmail},
+    #{provider}
+    );
 
   </insert>
   <select id="isUserExist" resultType="com.tcp.iamlazy.user.entity.User">
@@ -21,10 +24,46 @@
         userIdx as userIdx,
         userKakaoID,
         userName,
-        userImage
+        userImage,
+        userEmail,
+        provider
     from `user` as u
     where u.userKakaoID = #{userKakaoID}
 
   </select>
+  <select id="getUserbyId" resultType="com.tcp.iamlazy.user.entity.User">
+
+    SELECT
+        userIdx as userIdx,
+        userKakaoID,
+        userName,
+        userImage,
+        userEmail,
+        provider
+    FROM `user` as u
+    where u.userKakaoID = #{value}
+
+  </select>
+  <select id="findByEmail" resultType="com.tcp.iamlazy.user.entity.User">
+    SELECT
+        userIdx as userIdx,
+        userKakaoID,
+        userName,
+        userImage,
+        userEmail,
+        provider
+    FROM `user` as u
+    where u.userEmail = #{value}
+
+  </select>
+  <update id="updateUser">
+    UPDATE `user`
+        SET
+        userName = #{userName}
+        , userEmail = #{userEmail}
+
+        WHERE userKakaoID = #{userKakaoID}
+
+  </update>
 
 </mapper>

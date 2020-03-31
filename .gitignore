@@ -143,4 +143,4 @@ src/main/resources/application-private.yml
 *.log
 *.idea
 HELP.md
-**/schema.sql
+**/_schema.sql

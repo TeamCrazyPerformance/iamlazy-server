@@ -31,7 +31,7 @@
             and #{localDateTime} between t.startDate and t.endDate
 
     </select>
-    <insert id="insertTodo">
+    <insert id="insertTodo" useGeneratedKeys="true" keyProperty="userId,todoIdx" parameterType="com.tcp.iamlazy.todo.entity.ToDo">
 
         INSERT INTO todo
         (
@@ -105,7 +105,7 @@
     <delete id="deleteToDoById">
 
         DELETE FROM todo
-        WHERE todoIdx = #{value}
+        WHERE todoIdx = #{todoIdx}
         and userId = #{userId}
 
     </delete>

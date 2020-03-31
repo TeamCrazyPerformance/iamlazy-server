@@ -1,13 +1,11 @@
 package com.tcp.iamlazy.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tcp.iamlazy.user.model.KakaoPrincipal;
+import com.tcp.iamlazy.configuration.security.oauth2.AuthProvider;
+import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -15,19 +13,21 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode
 public class User {
     @NotNull(message = "userIdx cannot be null.")
-    private int userIdx;
+    private long userIdx;
     private String userKakaoID;
     private String userName;
     private String userImage;
 
-    @JsonIgnore
-    public static User retrieveUserFromKakao(KakaoPrincipal kakaoAccount) {
-        User user = new User();
-        user.setUserKakaoID(kakaoAccount.getId());
-        user.setUserImage(kakaoAccount.getUserImageLink());
-        user.setUserName(kakaoAccount.getUserName());
+    private String password;
+    private AuthProvider provider;
+    private String providerId;
+    private String userEmail;
 
-        return user;
+    public long getKakaoIdAsLong() {
+        return Long.parseLong(this.getUserKakaoID());
     }
 
+    public void setProviderId(String id) {
+        this.providerId = id;
+    }
 }

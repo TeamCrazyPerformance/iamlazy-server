@@ -1,8 +1,6 @@
 package com.tcp.iamlazy.event.user.listener;
 
 import com.tcp.iamlazy.event.user.UserRegistrationEvent;
-import com.tcp.iamlazy.user.entity.User;
-import com.tcp.iamlazy.user.model.KakaoPrincipal;
 import com.tcp.iamlazy.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -19,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Slf4j
 @Component
+@Deprecated
 public class UserRegistrationEventListener {
 
   private final UserService userService;
@@ -35,20 +34,7 @@ public class UserRegistrationEventListener {
   @EventListener
   @Transactional
   public void handleUserRegistrationEvent(UserRegistrationEvent event) {
-
     log.info("User registration event was {}", event);
-
-    final KakaoPrincipal kakaoPrincipal = event.getKakaoPrincipal();
-
-    final User loginUser = User.retrieveUserFromKakao(kakaoPrincipal);
-
-    final boolean userExist = userService.isUserExist(loginUser);
-    if (!userExist) {
-      if (!userService.registerUser(loginUser)) {
-        log.error("Register failed");
-        throw new RuntimeException("user register failed");
-      }
-    }
   }
 
 }

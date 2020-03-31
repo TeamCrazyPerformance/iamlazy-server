@@ -26,7 +26,7 @@ public class ToDoService {
 
     @Transactional
     public List<ToDo> getToDoListFromDate(String userName, String date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         LocalDateTime localDateTime;
         try {
             localDateTime = LocalDateTime.ofInstant(format.parse(date).toInstant(),
@@ -35,6 +35,8 @@ public class ToDoService {
             log.error("Parameter date can't be parsed.. check valid format yyyyMMdd : {}", e.getMessage());
             localDateTime = LocalDateTime.now();
         }
+
+        log.info("Translated date was {}", localDateTime);
 
         ToDoRangeSearchCondition condition = new ToDoRangeSearchCondition(userName, localDateTime);
 

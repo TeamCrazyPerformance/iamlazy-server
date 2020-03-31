@@ -17,3 +17,6 @@ logging:
     org:
       springframework:
         web: TRACE
+
+server:
+  port: 8092

@@ -2,6 +2,7 @@ package com.tcp.iamlazy.user.service;
 
 import com.tcp.iamlazy.user.entity.User;
 import com.tcp.iamlazy.user.repository.UserMapper;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,5 +48,9 @@ public class UserService {
         } else {
             return false;
         }
+    }
+
+    public Optional<User> findById(Long id) {
+        return userMapper.getUserbyId(id);
     }
 }
