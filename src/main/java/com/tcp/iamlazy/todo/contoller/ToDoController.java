@@ -167,7 +167,7 @@ public class ToDoController {
 
         final String userName = client.getPrincipalName();
 
-        toDoService.deleteTodo(todoIdx);
+        toDoService.deleteTodo(todoIdx, userName);
 
         return ResponseEntity.ok().build();
     }

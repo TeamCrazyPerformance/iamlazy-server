@@ -2,6 +2,7 @@ package com.tcp.iamlazy.todo.service;
 
 import com.tcp.iamlazy.todo.entity.ToDo;
 import com.tcp.iamlazy.todo.entity.dto.ToDoRangeSearchCondition;
+import com.tcp.iamlazy.todo.entity.dto.TodoDeleteCondition;
 import com.tcp.iamlazy.todo.entity.dto.TodoIdxCondition;
 import com.tcp.iamlazy.todo.repository.ToDoMapper;
 import java.text.ParseException;
@@ -21,12 +22,6 @@ public class ToDoService {
 
     public ToDoService(ToDoMapper toDoMapper){
         this.toDoMapper = toDoMapper;
-    }
-
-    public List<ToDo> getDayToDo(){
-        List<ToDo> toDoList = toDoMapper.getDayToDo();
-
-        return  toDoList;
     }
 
     @Transactional
@@ -65,7 +60,8 @@ public class ToDoService {
     }
 
     @Transactional
-    public void deleteTodo(int todoIdx) {
-        toDoMapper.deleteToDoById(todoIdx);
+    public void deleteTodo(int todoIdx, String userName) {
+        TodoDeleteCondition con = new TodoDeleteCondition(Integer.parseInt(userName), todoIdx);
+        toDoMapper.deleteToDoById(con);
     }
 }

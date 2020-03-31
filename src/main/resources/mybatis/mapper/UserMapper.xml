@@ -23,7 +23,7 @@
         userName,
         userImage
     from `user` as u
-    where u.userName = #{userName}
+    where u.userKakaoID = #{userKakaoID}
 
   </select>
 

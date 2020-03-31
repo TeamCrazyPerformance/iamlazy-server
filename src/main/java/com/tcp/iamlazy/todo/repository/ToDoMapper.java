@@ -2,6 +2,7 @@ package com.tcp.iamlazy.todo.repository;
 
 import com.tcp.iamlazy.todo.entity.ToDo;
 import com.tcp.iamlazy.todo.entity.dto.ToDoRangeSearchCondition;
+import com.tcp.iamlazy.todo.entity.dto.TodoDeleteCondition;
 import com.tcp.iamlazy.todo.entity.dto.TodoIdxCondition;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -22,5 +23,5 @@ public interface ToDoMapper {
 
     void updateTodoBy(ToDo todo);
 
-    void deleteToDoById(int todoIdx);
+    void deleteToDoById(TodoDeleteCondition todoIdx);
 }

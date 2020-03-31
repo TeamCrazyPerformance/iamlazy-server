@@ -7,6 +7,10 @@ import com.tcp.iamlazy.user.model.KakaoPrincipal;
 import com.tcp.iamlazy.util.func.Fn;
 import io.vavr.control.Try;
 import java.net.URI;
+import java.util.function.BiConsumer;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,13 +40,29 @@ public class OAuthController {
 
   @GetMapping("/login/success")
   public ResponseEntity<KakaoPrincipal> loginSuccess(OAuth2AuthenticationToken authentication,
-                                             @AuthenticationPrincipal OAuth2User principal) {
+                                                     @AuthenticationPrincipal OAuth2User principal,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) {
 
     if (authentication == null) {
       log.info("There is no authentication");
       HttpHeaders headers = new HttpHeaders();
       headers.setLocation(URI.create("/login/fail"));
       return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+    }
+
+
+    log.info("cookie was : {}", request.getCookies().length);
+    for (Cookie c : request.getCookies()) {
+      log.info("each cookie : name= {}, val={}, dom={}, path={}, max={}, secure={}", c.getName(), c.getValue(), c.getDomain(), c.getPath(), c.getMaxAge(), c.getSecure());
+      if (c.getName().equalsIgnoreCase("jsessionid")) {
+        Cookie cookie = new Cookie(c.getName(), c.getValue());
+        cookie.setPath("/");
+        cookie.setMaxAge(3600);
+//        cookie.setDomain(c.getDomain());
+        response.addCookie(cookie);
+        addSameSiteOptionToCookie(response::addHeader, response.getHeader("Set-Cookie"));
+      }
     }
 
     final Try<String> callTry = Try.of(() -> objectMapper.writeValueAsString(principal.getAttributes()));
@@ -64,6 +84,14 @@ public class OAuthController {
     log.info("You are not logged in.");
 
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body("You are not logged in");
+  }
+
+  private void addSameSiteOptionToCookie(BiConsumer<String, String> biCon, String cookie) {
+    if (cookie.contains("SameSite")) {
+      biCon.accept("Set-Cookie", String.format("%s", cookie));
+    } else {
+      biCon.accept("Set-Cookie", String.format("%s; %s", cookie, "SameSite=None; Secure"));
+    }
   }
 
 }

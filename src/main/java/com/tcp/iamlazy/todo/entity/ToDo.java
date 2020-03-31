@@ -1,5 +1,7 @@
 package com.tcp.iamlazy.todo.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,8 +13,10 @@ import java.util.Date;
 @ToString
 public class ToDo {
     @NotNull(message = "userIdx cannot be null.")
+    @JsonProperty(access = Access.READ_ONLY)
     private int userId;
     @NotNull(message = "todoIdx cannot be null.")
+    @JsonProperty(access = Access.READ_ONLY)
     private int todoIdx;
     private String todoTitle;
     private String todoContent;
