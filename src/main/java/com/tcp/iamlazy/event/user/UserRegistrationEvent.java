@@ -1,6 +1,6 @@
 package com.tcp.iamlazy.event.user;
 
-import com.tcp.iamlazy.user.model.KakaoPrincipal;
+//import com.tcp.iamlazy.user.model.KakaoPrincipal;
 import lombok.Data;
 import lombok.ToString;
 
@@ -14,5 +14,5 @@ import lombok.ToString;
 @Data
 @ToString
 public class UserRegistrationEvent {
-  private final KakaoPrincipal kakaoPrincipal;
+//  private final KakaoPrincipal kakaoPrincipal;
 }
