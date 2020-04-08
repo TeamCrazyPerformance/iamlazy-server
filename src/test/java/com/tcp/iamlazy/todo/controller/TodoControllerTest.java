@@ -2,7 +2,6 @@ package com.tcp.iamlazy.todo.controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.tcp.iamlazy.configuration.security.CustomUserDetailsService;
 import com.tcp.iamlazy.configuration.security.UserPrincipal;
 import com.tcp.iamlazy.todo.contoller.ToDoController;
 import com.tcp.iamlazy.todo.service.ToDoService;
@@ -14,8 +13,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -64,7 +61,6 @@ public class TodoControllerTest {
                                           + "\t\"monthDay\" : 3,\n"
                                           + "\t\"finish\" : 0\n"
                                           + "}"))
-//        .andExpect(model().errorCount(0))
         .andExpect(status().isBadRequest())
     ;
   }
@@ -140,8 +136,6 @@ public class TodoControllerTest {
   }
 
   @Test
-//  @WithMockUser(username = "admin", authorities = { "ADMIN", "USER" })
-//  @WithUserDetails(value = "1313651068", userDetailsServiceBeanName = "customUserDetailsService")
   public void Todo_데이터_업데이트_타당성_검사_WhenAllFieldAreGoodShouldReturnSuccess()
       throws Exception {
 
