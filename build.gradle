@@ -47,12 +47,11 @@ dependencies {
     // https://mvnrepository.com/artifact/io.springfox/springfox-bean-validators
     compile group: 'io.springfox', name: 'springfox-bean-validators', version: '2.9.2'
 
-
-
-
-
-
     testImplementation 'org.springframework.security:spring-security-test'
+
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.12.2'
+
 }
 
 test {

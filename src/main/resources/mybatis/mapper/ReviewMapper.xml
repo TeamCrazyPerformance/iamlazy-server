@@ -4,11 +4,29 @@
 
 <mapper namespace="com.tcp.iamlazy.review.repository.ReviewMapper">
 
-    <select id="getWeekRv" resultType="com.tcp.iamlazy.review.entity.Review">
+    <select id="getWeekRv" parameterType="String" resultType="com.tcp.iamlazy.review.entity.Review">
         SELECT toDoDate, reviewContent, emoticon
         FROM review
-        WHERE toDoDate BETWEEN DATE_FORMAT(DATE_ADD(NOW(), INTERVAL (WEEKDAY(NOW())) * -1 DAY), '%Y-%m-%d')
-              and DATE_ADD(NOW(), INTERVAL (6 - WEEKDAY(NOW())) * +1 DAY)
+        WHERE toDoDate = #{toDodate}
     </select>
+
+    <!--<select id="getWeekRv" resultType="com.tcp.iamlazy.review.entity.Review">-->
+        <!--SELECT toDoDate, reviewContent, emoticon-->
+        <!--FROM review-->
+        <!--WHERE toDoDate BETWEEN DATE_FORMAT(DATE_ADD(NOW(), INTERVAL (WEEKDAY(NOW())) * -1 DAY), '%Y-%m-%d')-->
+              <!--and DATE_ADD(NOW(), INTERVAL (6 - WEEKDAY(NOW())) * +1 DAY)-->
+    <!--</select>-->
+
+
+    <insert id="insertReview" parameterType="Review">
+        INSERT INTO review(userIdx, toDoDate, reviewContent, emoticon)
+        VALUES(#{userIdx}, NOW(), #{reviewContent}, #{emoticon})
+    </insert>
+
+    <update id="updateReview" parameterType="Review">
+        UPDATE review
+        SET toDoDate = #{toDoDate}, reviewContent = #{reviewContent}, emoticon = #{emoticon}
+        WHERE userIdx = #{userIdx}
+    </update>
 
 </mapper>

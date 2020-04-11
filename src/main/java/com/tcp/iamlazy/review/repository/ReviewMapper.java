@@ -10,6 +10,11 @@ import java.util.List;
 @Mapper
 public interface ReviewMapper {
 //  주간 회고 요청
-    List<Review> getWeekRv();
+    List<Review> getWeekRv(String toDoDate);
 
+// 회고 등록
+    void insertReview(Review review);
+
+// 회고 수정
+    void updateReview(Review rvItem);
 }
