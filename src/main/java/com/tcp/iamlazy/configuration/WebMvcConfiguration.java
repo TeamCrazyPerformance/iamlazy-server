@@ -12,8 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Created with intellij IDEA. by 2020 04 2020/04/01 1:17 오전 01 User we at 01 17 To change this
  * template use File | Settings | File Templates.
  */
-@EnableWebMvc
-@Configuration
+//@EnableWebMvc
+//@Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
 //  private final long MAX_AGE_SECS = 3600;

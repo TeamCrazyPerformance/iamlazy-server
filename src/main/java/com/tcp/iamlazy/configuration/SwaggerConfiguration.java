@@ -1,11 +1,13 @@
 package com.tcp.iamlazy.configuration;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.tcp.iamlazy.configuration.security.UserPrincipal;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.validation.Errors;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -67,6 +69,7 @@ public class SwaggerConfiguration {
     public Docket todoApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .ignoredParameterTypes(UserPrincipal.class)
+                .ignoredParameterTypes(Errors.class)
                 .securityContexts(Lists.newArrayList(securityContext()))
                 .securitySchemes(Lists.newArrayList(apiKey()))
                 .groupName("할일 요청")
