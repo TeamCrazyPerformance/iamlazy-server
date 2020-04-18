@@ -1,5 +1,6 @@
 package com.tcp.iamlazy.todo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcp.iamlazy.todo.validation.RepeatUnitLimit;
 import com.tcp.iamlazy.todo.validation.TodoValidation;
 import java.util.Date;
@@ -36,8 +37,12 @@ public class ToDo implements TodoValidation {
     private boolean finish;
 
     @Override
+    @JsonIgnore
     public boolean isRepeatUnitValid() {
         if (Objects.isNull(repeatableYN) && !this.repeatableYN) {
+            if (this.repeatUnit == 0 ) {
+                return true;
+            }
             if (Objects.isNull(this.repeatUnit)) {
                 return true;
             } else {
