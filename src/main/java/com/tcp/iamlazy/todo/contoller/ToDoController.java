@@ -1,31 +1,101 @@
 package com.tcp.iamlazy.todo.contoller;
 
+import com.tcp.iamlazy.auth.controller.payload.ApiResponse;
+import com.tcp.iamlazy.configuration.security.CurrentUser;
+import com.tcp.iamlazy.configuration.security.UserPrincipal;
 import com.tcp.iamlazy.todo.entity.ToDo;
 import com.tcp.iamlazy.todo.service.ToDoService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import java.net.URI;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping(value = "/todo")
+@RequestMapping(value = "/todos")
+@Slf4j
 public class ToDoController {
+
     private final ToDoService toDoService;
+
     public ToDoController(ToDoService toDoService) {
         this.toDoService = toDoService;
     }
 
-    @GetMapping("/dayToDo/{date}")
-    public ResponseEntity<List<ToDo>> getCompanyList(){
-        HashMap<String, Object> dayToDo = new HashMap<>();
+    @GetMapping
+    public ResponseEntity<List<ToDo>> getToDoListOfDay(@CurrentUser UserPrincipal userPrincipal,
+                                                     @RequestParam(name = "date", required = false, defaultValue = "today")String date) {
 
-        dayToDo.put("dayToDoItem", toDoService.getDayToDo());
+        final String userName = userPrincipal.getUsername();
 
-        return new ResponseEntity(dayToDo, HttpStatus.OK);
+        final List<ToDo> toDoListFromDate = toDoService.getToDoListFromDate(userName, date);
+
+        return ResponseEntity.ok(toDoListFromDate);
     }
+
+    @PostMapping()
+    public ResponseEntity<ApiResponse> createToDoList(@CurrentUser UserPrincipal userPrincipal,
+                                                 @RequestBody ToDo todo) {
+        toDoService.addTodoTo(todo, userPrincipal.getUsername());
+
+        URI location = ServletUriComponentsBuilder
+            .fromCurrentContextPath().path("/todos/{todoId}")
+            .buildAndExpand(todo.getTodoIdx()).toUri();
+
+        return ResponseEntity.created(location)
+            .body(new ApiResponse(true, "Todo registered successfully@"));
+    }
+
+    @GetMapping("/{todoId}")
+    public ResponseEntity<ToDo> getToDo(@CurrentUser UserPrincipal userPrincipal,
+                                        @PathVariable("todoId")int todoIdx) {
+
+        final String userName = userPrincipal.getUsername();
+
+        ToDo toDo = toDoService.getToDoById(todoIdx, userName);
+
+        return ResponseEntity.ok(toDo);
+    }
+
+    @PutMapping("/{todoId}")
+    public ResponseEntity<ApiResponse> updateToDo(@CurrentUser UserPrincipal userPrincipal,
+                                                  @PathVariable("todoId")int todoIdx,
+                                                  @RequestBody ToDo todo) {
+
+        final String userName = userPrincipal.getUsername();
+        todo.setTodoIdx(todoIdx);
+        todo.setUserId(Integer.parseInt(userName));
+
+        toDoService.updateTodo(todo);
+
+        return ResponseEntity.ok().body(new ApiResponse(true, "Todo updated successfully@"));
+
+    }
+
+    @DeleteMapping("/{todoId}")
+    public ResponseEntity<ApiResponse> deleteToDo(@CurrentUser UserPrincipal userPrincipal,
+                                                  @PathVariable("todoId")int todoIdx) {
+
+        final String userName = userPrincipal.getUsername();
+
+        toDoService.deleteTodo(todoIdx, userName);
+
+        return ResponseEntity.ok().body(new ApiResponse(true, "Todo deleted successfully@"));
+    }
+
 
 }

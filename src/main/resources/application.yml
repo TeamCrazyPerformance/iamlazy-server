@@ -17,3 +17,12 @@ logging:
     org:
       springframework:
         web: TRACE
+
+server:
+  port: 8092
+
+
+app:
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:8080/calendar # you should change it : this is just not a valid site address.
