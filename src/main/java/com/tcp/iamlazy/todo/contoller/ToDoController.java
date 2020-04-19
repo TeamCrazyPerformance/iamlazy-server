@@ -5,14 +5,17 @@ import com.tcp.iamlazy.configuration.security.CurrentUser;
 import com.tcp.iamlazy.configuration.security.UserPrincipal;
 import com.tcp.iamlazy.todo.entity.ToDo;
 import com.tcp.iamlazy.todo.service.ToDoService;
+import com.tcp.iamlazy.util.valid.RequestResultValidationProcessor;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import java.net.URI;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,7 +52,12 @@ public class ToDoController {
 
     @PostMapping()
     public ResponseEntity<ApiResponse> createToDoList(@CurrentUser UserPrincipal userPrincipal,
-                                                 @RequestBody ToDo todo) {
+                                                      @Valid @RequestBody ToDo todo,
+                                                      Errors errors) {
+        if (errors.hasErrors()) {
+            return RequestResultValidationProcessor.returnErrorResponse(errors);
+        }
+
         toDoService.addTodoTo(todo, userPrincipal.getUsername());
 
         URI location = ServletUriComponentsBuilder
@@ -74,7 +82,11 @@ public class ToDoController {
     @PutMapping("/{todoId}")
     public ResponseEntity<ApiResponse> updateToDo(@CurrentUser UserPrincipal userPrincipal,
                                                   @PathVariable("todoId")int todoIdx,
-                                                  @RequestBody ToDo todo) {
+                                                  @Valid @RequestBody ToDo todo,
+                                                  Errors errors) {
+        if (errors.hasErrors()) {
+            return RequestResultValidationProcessor.returnErrorResponse(errors);
+        }
 
         final String userName = userPrincipal.getUsername();
         todo.setTodoIdx(todoIdx);

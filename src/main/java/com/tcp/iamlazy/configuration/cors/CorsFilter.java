@@ -34,7 +34,7 @@ public class CorsFilter implements Filter {
 
     log.debug("CorsFilter filter");
 
-    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
     response.setHeader("Access-Control-Allow-Methods", "*");
     response.setHeader("Access-Control-Max-Age", "3600");
     response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-AUTH-TOKEN");

@@ -2,6 +2,7 @@ package com.tcp.iamlazy.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -11,18 +12,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Created with intellij IDEA. by 2020 04 2020/04/01 1:17 오전 01 User we at 01 17 To change this
  * template use File | Settings | File Templates.
  */
+//@EnableWebMvc
 //@Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-  private final long MAX_AGE_SECS = 3600;
+//  private final long MAX_AGE_SECS = 3600;
 
-  @Override
-  public void addCorsMappings(CorsRegistry registry) {
-    registry.addMapping("/**")
-        .allowedOrigins("*")
-        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-        .allowedHeaders("*")
-        .allowCredentials(true)
-        .maxAge(MAX_AGE_SECS);
-  }
+//  @Override
+//  public void addCorsMappings(CorsRegistry registry) {
+//    registry.addMapping("/**")
+//        .allowedOrigins("*")
+//        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+//        .allowedHeaders("*")
+//        .allowCredentials(true)
+//        .maxAge(MAX_AGE_SECS);
+//  }
+
+
 }
