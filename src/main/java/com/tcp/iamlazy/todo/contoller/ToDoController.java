@@ -1,6 +1,7 @@
 package com.tcp.iamlazy.todo.contoller;
 
 import com.tcp.iamlazy.auth.controller.payload.ApiResponse;
+import com.tcp.iamlazy.auth.controller.payload.todo.TodoPostResponse;
 import com.tcp.iamlazy.configuration.security.CurrentUser;
 import com.tcp.iamlazy.configuration.security.UserPrincipal;
 import com.tcp.iamlazy.todo.entity.ToDo;
@@ -69,7 +70,8 @@ public class ToDoController {
             .buildAndExpand(todo.getTodoIdx()).toUri();
 
         return ResponseEntity.created(location)
-            .body(new ApiResponse(true, "Todo registered successfully@"));
+            .body(new TodoPostResponse(true, "Todo registered successfully@",
+                                       todo.getTodoIdx()));
     }
 
     @GetMapping("/{todoId}")
