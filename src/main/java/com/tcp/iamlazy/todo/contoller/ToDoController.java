@@ -39,6 +39,10 @@ public class ToDoController {
         this.toDoService = toDoService;
     }
 
+    //@ApiParam(value = "title : 주소(필수)\n"
+    //      + "content : 수집 시간 (00~23)\n"
+    //      + "data : 수집 분 (00~59)\n"
+
     @GetMapping
     public ResponseEntity<List<ToDo>> getToDoListOfDay(@CurrentUser UserPrincipal userPrincipal,
                                                      @RequestParam(name = "date", required = false, defaultValue = "today")String date) {
