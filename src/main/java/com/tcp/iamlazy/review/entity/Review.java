@@ -1,6 +1,7 @@
 package com.tcp.iamlazy.review.entity;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,4 +17,5 @@ public class Review {
     private String toDoDate;
     private String reviewContent;
     private int emoticon;
+
 }

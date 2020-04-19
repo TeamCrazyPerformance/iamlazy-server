@@ -73,8 +73,9 @@ dependencies {
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
-
     testImplementation 'org.springframework.security:spring-security-test'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.12.2'
+
 }
 
 test {
