@@ -26,3 +26,6 @@ app:
   oauth2:
     authorizedRedirectUris:
       - http://localhost:8080/calendar # you should change it : this is just not a valid site address.
+  date:
+    param:
+      format: 'yyyy-MM-dd'
