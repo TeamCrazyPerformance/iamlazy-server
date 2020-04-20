@@ -1,9 +1,6 @@
 package com.tcp.iamlazy.todo.entity.dto;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import lombok.Data;
 
 /**
@@ -15,10 +12,5 @@ public class ToDoRangeSearchCondition {
 
   private final String userName;
   private final LocalDateTime localDateTime;
-
-  public String getLocalDateTime() {
-    SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-    return format.format(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
-  }
 
 }

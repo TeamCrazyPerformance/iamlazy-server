@@ -57,6 +57,9 @@ public class SwaggerConfiguration {
     public Docket reviewApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .ignoredParameterTypes(UserPrincipal.class)
+                .ignoredParameterTypes(Errors.class)
+                .securityContexts(Lists.newArrayList(securityContext()))
+                .securitySchemes(Lists.newArrayList(apiKey()))
                 .groupName("회고 요청")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tcp.iamlazy.review"))

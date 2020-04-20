@@ -1,23 +1,27 @@
 package com.tcp.iamlazy.todo.service;
 
+import static com.tcp.iamlazy.util.date.DateFormatCatcher.getLocalDateTime;
+
 import com.tcp.iamlazy.todo.entity.ToDo;
 import com.tcp.iamlazy.todo.entity.dto.ToDoRangeSearchCondition;
 import com.tcp.iamlazy.todo.entity.dto.TodoDeleteCondition;
 import com.tcp.iamlazy.todo.entity.dto.TodoIdxCondition;
 import com.tcp.iamlazy.todo.repository.ToDoMapper;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import com.tcp.iamlazy.util.date.DateFormatCatcher;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
 public class ToDoService {
+
+    @Value("${app.date.param.format")
+    private String dateStringFormat;
+
     private final ToDoMapper toDoMapper;
 
     public ToDoService(ToDoMapper toDoMapper){
@@ -26,16 +30,7 @@ public class ToDoService {
 
     @Transactional
     public List<ToDo> getToDoListFromDate(String userName, String date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        LocalDateTime localDateTime;
-        try {
-            localDateTime = LocalDateTime.ofInstant(format.parse(date).toInstant(),
-                                                    ZoneId.systemDefault());
-        } catch (ParseException e) {
-            log.error("Parameter date can't be parsed.. check valid format yyyyMMdd : {}", e.getMessage());
-            localDateTime = LocalDateTime.now();
-        }
-
+        LocalDateTime localDateTime = getLocalDateTime(date,dateStringFormat);
         log.info("Translated date was {}", localDateTime);
 
         ToDoRangeSearchCondition condition = new ToDoRangeSearchCondition(userName, localDateTime);

@@ -10,6 +10,7 @@ import com.tcp.iamlazy.util.valid.RequestResultValidationProcessor;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
@@ -57,6 +58,16 @@ public class ToDoController {
 
     @PostMapping()
     public ResponseEntity<ApiResponse> createToDoList(@CurrentUser UserPrincipal userPrincipal,
+                                                      @ApiParam(value = "title text : 할일 제목(필수, 공백 가능)\n"
+                                                          + "content text : 할일 내용(필수, 공백 가능)\n"
+                                                          + "todoDate : 등록 일자(필수, yyyy-MM-dd 포맷)\n"
+                                                          + "repeatableYN : 반복 여부( 이 값이 참일 경우에만 아래의 finish 필드를 제외한 값이 설정되어야 한다 )\n"
+                                                          + "repeatUnit : 반복 단위 설정 그 값은 1 : 매일, 7 : 매주, 30 : 매월 중 하나를 설정(repeatableYN 이 참일 때)\n"
+                                                          + "startDate : 시작 날짜(yyyy-MM-dd)\n"
+                                                          + "endDate : 종료 날짜(yyyy-MM-dd)\n"
+                                                          + "weekDay : repeatUnit 이 7인 경우 요일 (0 ~ 6 : 일 ~ 토)\n"
+                                                          + "monthDay : repeatUnit 이 30인 경우 일자\n"
+                                                          + "finish : 완료 여부(진위값)")
                                                       @Valid @RequestBody ToDo todo,
                                                       Errors errors) {
         if (errors.hasErrors()) {
