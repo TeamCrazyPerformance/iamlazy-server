@@ -5,11 +5,13 @@ import com.tcp.iamlazy.configuration.security.CurrentUser;
 import com.tcp.iamlazy.configuration.security.UserPrincipal;
 import com.tcp.iamlazy.review.entity.Review;
 import com.tcp.iamlazy.review.service.ReviewService;
+import com.tcp.iamlazy.util.valid.RequestResultValidationProcessor;
 import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +47,12 @@ public class ReviewController {
                                                         + "todoDate : 등록 일자(필수, yyyy-MM-dd 포맷)(필수)\n"
                                                         + "reviewContent : 회고 내용(필수)\n"
                                                         + "emoticon : 이모티콘 식별자")
-                                                    @RequestBody Review review){
+                                                    @RequestBody Review review,
+                                                    Errors errors){
+
+        if (errors.hasErrors()) {
+            return RequestResultValidationProcessor.returnErrorResponse(errors);
+        }
 
         reviewService.insertReview(review, userPrincipal.getUsername());
 
@@ -60,14 +67,21 @@ public class ReviewController {
     @PutMapping(value = "/{userIdx}/{reviewDate}")
     public ResponseEntity<ApiResponse> updateReview(@CurrentUser UserPrincipal userPrincipal,
                                                     @PathVariable(value = "userIdx") int id,
-                                                    @PathVariable(value = "userIdx") String reviewDate,
-                                                    @RequestBody Review review){
+                                                    @PathVariable(value = "reviewDate") String reviewDate,
+                                                    @RequestBody Review review,
+                                                    Errors errors) {
+        if (errors.hasErrors()) {
+            return RequestResultValidationProcessor.returnErrorResponse(errors);
+        }
+
         final int userId = Integer.parseInt(userPrincipal.getUsername());
 
         if ( userId != id ) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiResponse(false, "Invalid userId was taken. Current user can't edit this reivew."));
         }
+
+        review.setToDoDate(reviewDate);
 
         reviewService.updateReview(userId, review);
 
