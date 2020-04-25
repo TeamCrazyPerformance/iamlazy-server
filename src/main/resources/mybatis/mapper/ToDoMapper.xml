@@ -28,7 +28,17 @@
             todo t
         WHERE
             t.userId = #{userName}
-            and #{localDateTime} between t.startDate and t.endDate
+        and (
+            ((repeatableYN = 1)
+                and #{localDateTime} between t.startDate and t.endDate
+                and (
+                ((repeatUnit = 1) and 1 = 1)
+                or ((repeatUnit = 7) and DAY_OF_WEEK(#{localDateTime}) = weekDay+1)
+                or ((repeatUnit = 30) and DAY_OF_MONTH(#{localDateTime}) = monthDay)
+                )
+            )
+            or ((repeatableYN =0) and #{localDateTime} = todoDate)
+        )
 
     </select>
     <insert id="insertTodo" useGeneratedKeys="true" keyProperty="userId,todoIdx" parameterType="com.tcp.iamlazy.todo.entity.ToDo">

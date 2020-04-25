@@ -60,16 +60,19 @@ public class ToDo implements TodoValidation {
     private boolean finish;
 
     @JsonProperty("todoDate")
+    @ApiModelProperty(value = "registration date", name = "todoDate", dataType = "string", example = "2020-06-04", required = true)
     public String getTodoDate() {
         return getDataStringInyyyyMMdd(todoDate);
     }
 
     @JsonProperty("startDate")
+    @ApiModelProperty(value = "startDate(only required when repeatableYN is true", name = "startDate", dataType = "string", example = "2020-07-04", required = false)
     public String getStartDate() {
         return getDataStringInyyyyMMdd(startDate);
     }
 
     @JsonProperty("endDate")
+    @ApiModelProperty(value = "endDate(only required when repeatableYN is true", name = "endDate", dataType = "string", example = "2020=08-09", required = false)
     public String getEndDate() {
         return getDataStringInyyyyMMdd(endDate);
     }
@@ -92,7 +95,7 @@ public class ToDo implements TodoValidation {
     @Override
     @JsonIgnore
     public boolean isRepeatUnitValid() {
-        if (Objects.isNull(repeatableYN) && !this.repeatableYN) {
+        if (Objects.isNull(repeatableYN) || !this.repeatableYN) {
             if (this.repeatUnit == 0 ) {
                 return true;
             }
@@ -104,6 +107,17 @@ public class ToDo implements TodoValidation {
         } else if (Objects.isNull(this.repeatUnit)) {
             return false;
         } else if (repeatUnit == 1 || repeatUnit == 7 || repeatUnit == 30) {
+
+            if (Objects.isNull(startDate)) {
+                return false;
+            }
+            if (Objects.isNull(endDate)) {
+                return false;
+            }
+            if (endDate.before(startDate)) {
+                return false;
+            }
+
             return true;
         } else {
             return false;
