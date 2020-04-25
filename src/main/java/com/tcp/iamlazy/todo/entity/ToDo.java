@@ -37,7 +37,7 @@ public class ToDo implements TodoValidation {
     private Date todoDate;
     @ApiModelProperty(value = "true|false", name = "repeatableYN", dataType = "boolean", example = "true | false", required = true, allowableValues = "{true, false}")
     private boolean repeatableYN;
-    @ApiModelProperty(value = "repeatUnit(only required when repeatableYN is true", name = "repeatUnit", dataType = "integer", example = "1|7|30", required = false, allowableValues = "{1, 7, 30}")
+    @ApiModelProperty(value = "repeatUnit(only required when repeatableYN is true", name = "repeatUnit", dataType = "integer", example = "0|1|7|30", required = false, allowableValues = "{0, 1, 7, 30}")
     private int repeatUnit;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "startDate(only required when repeatableYN is true", name = "startDate", dataType = "string", example = "2020-07-04", required = false)

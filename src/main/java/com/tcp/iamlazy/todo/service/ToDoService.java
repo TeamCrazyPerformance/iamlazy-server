@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class ToDoService {
 
-    @Value("${app.date.param.format")
+    @Value("${app.date.param.format}")
     private String dateStringFormat;
 
     private final ToDoMapper toDoMapper;

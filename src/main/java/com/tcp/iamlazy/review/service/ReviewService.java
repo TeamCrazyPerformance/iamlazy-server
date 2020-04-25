@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class ReviewService {
 
     private final ReviewMapper reviewMapper;
-    @Value("${app.date.param.format")
+    @Value("${app.date.param.format}")
     private String dateStringFormat;
 
     public ReviewService(ReviewMapper reviewMapper) {
