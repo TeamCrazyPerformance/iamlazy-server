@@ -29,7 +29,7 @@
         WHERE
             t.userId = #{userName}
         and (
-            ((repeatableYN = 1)
+            ((repeatUnit != 0)
                 and #{localDateTime} between t.startDate and t.endDate
                 and (
                 ((repeatUnit = 1) and 1 = 1)
@@ -37,7 +37,7 @@
                 or ((repeatUnit = 30) and DAY_OF_MONTH(#{localDateTime}) = monthDay)
                 )
             )
-            or ((repeatableYN =0) and #{localDateTime} = todoDate)
+            or ((repeatUnit = 0) and #{localDateTime} = todoDate)
         )
 
     </select>
@@ -49,7 +49,6 @@
             todoTitle,
             todoContent,
             todoDate,
-            repeatableYN,
             repeatUnit,
             startDate,
             endDate,
@@ -63,7 +62,6 @@
             #{todoTitle},
             #{todoContent},
             #{todoDate},
-            #{repeatableYN},
             #{repeatUnit},
             #{startDate},
             #{endDate},

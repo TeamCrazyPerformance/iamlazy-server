@@ -11,7 +11,7 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {TodoRepeatUnitValidator.class})
 public @interface RepeatUnitLimit {
-  String message() default "유효한 값이 아닙니다. 유효값 0, 1, 7, 30";  // 애노테이션 지정 시 validatino rule에 맞는 메시지 지정 가능!!!
+  String message() default "유효한 값이 아닙니다. RepeatUnit : 유효값 0, 1, 7, 30, startDate <= endDate ";  // 애노테이션 지정 시 validatino rule에 맞는 메시지 지정 가능!!!
 
   Class<?>[] groups() default {};
 

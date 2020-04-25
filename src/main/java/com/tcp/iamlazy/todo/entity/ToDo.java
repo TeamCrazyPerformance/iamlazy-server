@@ -38,8 +38,6 @@ public class ToDo implements TodoValidation {
     @ApiModelProperty(value = "registration date", name = "todoDate", dataType = "string", example = "2020-06-04", required = true)
     @JsonIgnore
     private Date todoDate;
-    @ApiModelProperty(value = "true|false", name = "repeatableYN", dataType = "boolean", example = "true | false", required = true, allowableValues = "{true, false}")
-    private boolean repeatableYN;
     @ApiModelProperty(value = "repeatUnit(only required when repeatableYN is true", name = "repeatUnit", dataType = "integer", example = "0|1|7|30", required = false, allowableValues = "{0, 1, 7, 30}")
     private int repeatUnit;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -95,15 +93,8 @@ public class ToDo implements TodoValidation {
     @Override
     @JsonIgnore
     public boolean isRepeatUnitValid() {
-        if (Objects.isNull(repeatableYN) || !this.repeatableYN) {
-            if (this.repeatUnit == 0 ) {
-                return true;
-            }
-            if (Objects.isNull(this.repeatUnit)) {
-                return true;
-            } else {
-                return false;
-            }
+        if (this.repeatUnit == 0) {
+            return true;
         } else if (Objects.isNull(this.repeatUnit)) {
             return false;
         } else if (repeatUnit == 1 || repeatUnit == 7 || repeatUnit == 30) {
