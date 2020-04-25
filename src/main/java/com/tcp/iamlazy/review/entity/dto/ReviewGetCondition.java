@@ -1,6 +1,6 @@
 package com.tcp.iamlazy.review.entity.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.Data;
 
 /**
@@ -11,6 +11,6 @@ import lombok.Data;
 public class ReviewGetCondition {
 
   private final String userName;
-  private final LocalDateTime localDateTime;
+  private final LocalDate localDateTime;
 
 }

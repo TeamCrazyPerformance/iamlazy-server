@@ -1,5 +1,7 @@
 package com.tcp.iamlazy.todo.entity;
 
+import static com.tcp.iamlazy.util.date.DateFormatCatcher.getDataStringInyyyyMMdd;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -34,6 +36,7 @@ public class ToDo implements TodoValidation {
     private String todoContent;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "registration date", name = "todoDate", dataType = "string", example = "2020-06-04", required = true)
+    @JsonIgnore
     private Date todoDate;
     @ApiModelProperty(value = "true|false", name = "repeatableYN", dataType = "boolean", example = "true | false", required = true, allowableValues = "{true, false}")
     private boolean repeatableYN;
@@ -41,9 +44,11 @@ public class ToDo implements TodoValidation {
     private int repeatUnit;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "startDate(only required when repeatableYN is true", name = "startDate", dataType = "string", example = "2020-07-04", required = false)
+    @JsonIgnore
     private Date startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "endDate(only required when repeatableYN is true", name = "endDate", dataType = "string", example = "2020=08-09", required = false)
+    @JsonIgnore
     private Date endDate;
     @DecimalMax(value = "6")
     @ApiModelProperty(value = "weekDay(only required when repeatableYN is true", name = "weekDay", dataType = "string", example = "0~6", required = false, allowableValues = "range(0, 7)")
@@ -53,6 +58,36 @@ public class ToDo implements TodoValidation {
     private int monthDay;
     @ApiModelProperty(value = "finish(only required when repeatableYN is true", name = "finish", dataType = "integer", example = "true|false", required = false)
     private boolean finish;
+
+    @JsonProperty("todoDate")
+    public String getTodoDate() {
+        return getDataStringInyyyyMMdd(todoDate);
+    }
+
+    @JsonProperty("startDate")
+    public String getStartDate() {
+        return getDataStringInyyyyMMdd(startDate);
+    }
+
+    @JsonProperty("endDate")
+    public String getEndDate() {
+        return getDataStringInyyyyMMdd(endDate);
+    }
+
+    @JsonProperty("todoDate")
+    public void setTodoDate(Date todoDate) {
+        this.todoDate = todoDate;
+    }
+
+    @JsonProperty("startDate")
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    @JsonProperty("endDate")
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
     @Override
     @JsonIgnore

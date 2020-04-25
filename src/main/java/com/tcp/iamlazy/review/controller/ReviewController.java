@@ -1,5 +1,7 @@
 package com.tcp.iamlazy.review.controller;
 
+import static com.tcp.iamlazy.util.date.DateFormatCatcher.isFormatParsible;
+
 import com.tcp.iamlazy.auth.controller.payload.ApiResponse;
 import com.tcp.iamlazy.configuration.security.CurrentUser;
 import com.tcp.iamlazy.configuration.security.UserPrincipal;
@@ -9,6 +11,7 @@ import com.tcp.iamlazy.util.valid.RequestResultValidationProcessor;
 import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -26,19 +29,26 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    @Value("${app.date.param.format}")
+    private String dateStringFormat;
 
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
 
     @GetMapping("/{reviewDate}")
-    public ResponseEntity<List<Review>> getCompanyList(@CurrentUser UserPrincipal userPrincipal,
-                                                       @PathVariable(value = "reviewDate") String reviewDate){
+    public ResponseEntity<ApiResponse> getCompanyList(@CurrentUser UserPrincipal userPrincipal,
+                                                      @PathVariable(value = "reviewDate") String reviewDate){
+
+        if (!isFormatParsible(reviewDate, dateStringFormat)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(false, "Invalid date format. should be " + dateStringFormat));
+        }
 
         final List<Review> weekReviews = reviewService
             .getWeekReviews(reviewDate, userPrincipal.getUsername());
 
-        return ResponseEntity.ok(weekReviews);
+        return ResponseEntity.ok(new ApiResponse(true, "success", weekReviews));
     }
 
     @PostMapping()
@@ -81,9 +91,12 @@ public class ReviewController {
                 .body(new ApiResponse(false, "Invalid userId was taken. Current user can't edit this reivew."));
         }
 
-        review.setToDoDate(reviewDate);
+        if (!isFormatParsible(reviewDate, dateStringFormat)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(false, "Invalid date format. should be " + dateStringFormat));
+        }
 
-        reviewService.updateReview(userId, review);
+        reviewService.updateReview(userId, review, reviewDate);
 
         return ResponseEntity.ok().body(new ApiResponse(true, "Review updated successfully@"));
     }

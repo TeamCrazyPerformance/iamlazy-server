@@ -7,16 +7,12 @@ import com.tcp.iamlazy.configuration.security.UserPrincipal;
 import com.tcp.iamlazy.todo.entity.ToDo;
 import com.tcp.iamlazy.todo.service.ToDoService;
 import com.tcp.iamlazy.util.valid.RequestResultValidationProcessor;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,10 +35,6 @@ public class ToDoController {
     public ToDoController(ToDoService toDoService) {
         this.toDoService = toDoService;
     }
-
-    //@ApiParam(value = "title : 주소(필수)\n"
-    //      + "content : 수집 시간 (00~23)\n"
-    //      + "data : 수집 분 (00~59)\n"
 
     @GetMapping
     public ResponseEntity<List<ToDo>> getToDoListOfDay(@CurrentUser UserPrincipal userPrincipal,

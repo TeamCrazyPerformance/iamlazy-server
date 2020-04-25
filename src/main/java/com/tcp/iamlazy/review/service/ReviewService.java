@@ -1,10 +1,12 @@
 package com.tcp.iamlazy.review.service;
 
+import static com.tcp.iamlazy.util.date.DateFormatCatcher.getDate;
+
 import com.tcp.iamlazy.review.entity.Review;
 import com.tcp.iamlazy.review.entity.dto.ReviewGetCondition;
 import com.tcp.iamlazy.review.repository.ReviewMapper;
 import com.tcp.iamlazy.util.date.DateFormatCatcher;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,8 +24,8 @@ public class ReviewService {
 
     public List<Review> getWeekReviews(String toDoDate, String username){
 
-        final LocalDateTime targetDateTime = DateFormatCatcher
-            .getLocalDateTime(toDoDate, dateStringFormat);
+        final LocalDate targetDateTime = DateFormatCatcher
+            .getLocalDate(toDoDate, dateStringFormat);
 
         ReviewGetCondition condition = new ReviewGetCondition(username, targetDateTime);
 
@@ -42,13 +44,13 @@ public class ReviewService {
         reviewMapper.insertReview(rvItem);
     }
 
-    public void updateReview(int userIdx, Review review){
+    public void updateReview(int userIdx, Review review, String reviewDate){
         if(review == null){
             throw new NullPointerException("reviews cannot be null");
         }
         Review rvItem = new Review();
         rvItem.setUserIdx(userIdx);
-        rvItem.setToDoDate(review.getToDoDate());
+        rvItem.setToDoDate(getDate(reviewDate, dateStringFormat));
         rvItem.setReviewContent(review.getReviewContent());
         rvItem.setEmoticon(review.getEmoticon());
 

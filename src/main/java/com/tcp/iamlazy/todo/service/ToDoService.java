@@ -1,14 +1,13 @@
 package com.tcp.iamlazy.todo.service;
 
-import static com.tcp.iamlazy.util.date.DateFormatCatcher.getLocalDateTime;
+import static com.tcp.iamlazy.util.date.DateFormatCatcher.getLocalDate;
 
 import com.tcp.iamlazy.todo.entity.ToDo;
 import com.tcp.iamlazy.todo.entity.dto.ToDoRangeSearchCondition;
 import com.tcp.iamlazy.todo.entity.dto.TodoDeleteCondition;
 import com.tcp.iamlazy.todo.entity.dto.TodoIdxCondition;
 import com.tcp.iamlazy.todo.repository.ToDoMapper;
-import com.tcp.iamlazy.util.date.DateFormatCatcher;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +29,7 @@ public class ToDoService {
 
     @Transactional
     public List<ToDo> getToDoListFromDate(String userName, String date) {
-        LocalDateTime localDateTime = getLocalDateTime(date,dateStringFormat);
+        LocalDate localDateTime = getLocalDate(date, dateStringFormat);
         log.info("Translated date was {}", localDateTime);
 
         ToDoRangeSearchCondition condition = new ToDoRangeSearchCondition(userName, localDateTime);

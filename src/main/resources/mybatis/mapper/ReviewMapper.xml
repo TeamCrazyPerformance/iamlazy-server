@@ -4,7 +4,7 @@
 
 <mapper namespace="com.tcp.iamlazy.review.repository.ReviewMapper">
 
-    <select id="getWeekReviews" parameterType="String" resultType="com.tcp.iamlazy.review.entity.Review">
+    <select id="getWeekReviews" resultType="com.tcp.iamlazy.review.entity.Review">
         SELECT
                 toDoDate,
                 reviewContent,
