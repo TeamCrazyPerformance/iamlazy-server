@@ -51,8 +51,8 @@ public class ToDo implements TodoValidation {
     @JsonIgnore
     private Date endDate;
     @DecimalMax(value = "6")
-    @ApiModelProperty(value = "weekDay(only required when repeatableYN is true", name = "weekDay", dataType = "string", example = "0~6", required = false, allowableValues = "range(0, 7)")
-    private String weekDay;
+    @ApiModelProperty(value = "weekDay(only required when repeatableYN is true", name = "weekDay", dataType = "integer", example = "0~6", required = false, allowableValues = "range(0, 7)")
+    private int weekDay;
     @DecimalMax(value = "31")
     @ApiModelProperty(value = "monthDay(only required when repeatableYN is true", name = "monthDay", dataType = "integer", example = "1~31", required = false, allowableValues = "range(1, 32)")
     private int monthDay;
